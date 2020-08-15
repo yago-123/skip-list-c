@@ -1,5 +1,13 @@
 # Skip List 
-This project implements a dynamic `Skip List` written in C. Skip List is an [alternative to balanced binary trees](https://15721.courses.cs.cmu.edu/spring2018/papers/08-oltpindexes1/pugh-skiplists-cacm1990.pdf), performs operations in `O(log(n))` and uses several pointers for every value in order to improve performance (see interactive mode above). Every time that an element it's inserted have a 0.5 probability of grow up. 
+This project implements a dynamic `Skip List` written in C. Skip lists are an [alternative to balanced binary trees](https://15721.courses.cs.cmu.edu/spring2018/papers/08-oltpindexes1/pugh-skiplists-cacm1990.pdf), performs operations in `O(log(n))` and uses several pointers for every value in order to improve performance (see interactive mode above). Every time that an element it's inserted have a 0.5 probability of grow up. 
+## Skip List vs. Linked List - O(log(n)) vs. O(n)
+Below we can see a graph that shows the number of comparisons needed to search in skip list versus a sorted linked list. The X-axis represents the length of the data structure and Y-axis **the number of times that two values are compared** so it doesen't depend on the machine used. 
+![](img/skip-list-vs-linked-list.png)
+
+As can be seen in the image, the graph reflects the difference between a `O(n)` (linked list) and `O(log(n))` (skip list) operation. This study was made with 50 different lengths (from 1.000 to 50.000) and a mean of 1.000 searches for every length. 
+
+Here you can see the skip list alone: 
+![](img/skip-list-comparations.png) 
 ## Specifications 
 | Function         | Signature                                        | Explanation                                                                                      |
 |------------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------|

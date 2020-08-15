@@ -1,4 +1,4 @@
-#include"skip_list/skip_list.h"
+#include"skip_list.h"
 
 #define INITIALNUMBERS 20
 
