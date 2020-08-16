@@ -5,19 +5,19 @@
 #include<limits.h>
 
 #define SUCCESS 0
-#define ERROR_CREAR 1 
-#define ERROR_DESTRUIR 2
-#define LLISTA_NO_CREADA 3
-#define LLISTA_BUIDA 4
-#define ELEMENT_NO_TROBAT 6
-#define ERROR_RECORRER 7
-#define ERROR_CREAR_CAPA_SUPERIOR 8
+#define ERROR_CREATION 1 
+#define ERROR_DESTROY 2
+#define NOT_DELETED_LIST 3
+#define EMPTY_LIST 4
+#define ELEMENT_NOT_FOUND 6
+#define ERROR_WALK 7
+#define ERROR_CREATION_CAPA_SUPERIOR 8
 
-#define INFINIT_POSITIU INT_MAX
-#define INFINIT_NEGATIU INT_MIN
+#define INFINIT_POSITIVE INT_MAX
+#define INFINIT_NEGATIVE INT_MIN
 
-// Necesari per mostrar elements test
-#define INDETERMINAT (INT_MAX-1)
+// Used for showing elements in test
+#define INDETERMINATE (INT_MAX-1)
 
 typedef struct skip_node_t {
 	int key, level; 
@@ -30,18 +30,18 @@ typedef struct skip_list_t {
 	int nElems;
 } skip_list;
 
-int Crear(skip_list *sl);
-int Destruir(skip_list *sl);
-int Inserir(skip_list *sl, int elem);
-int Esborrar(skip_list *sl, int elem);
-int Longitud(skip_list sl, int *lon);
-int Buscar(skip_list sl, int elem, bool *trobat);
-int Cost_Buscar(skip_list sl, int elem, int *cost);
+int Create(skip_list *sl);
+int Destroy(skip_list *sl);
+int Insert(skip_list *sl, int elem);
+int Delete(skip_list *sl, int elem);
+int Length(skip_list sl, int *length);
+int Search(skip_list sl, int elem, bool *found);
+int Cost_Search(skip_list sl, int elem, int *cost);
 
 // Funcions auxiliars
-bool Existeix(skip_list sl); 
-int creaNovaCapaSuperior(skip_list *sl); 
-int eliminaCapaSuperior(skip_list *sl); 
-int eliminaUnElement(skip_list *sl, int elem); 
+bool Exist(skip_list sl); 
+int createNewUpperLayer(skip_list *sl); 
+int deleteUpperLayer(skip_list *sl); 
+int deleteOneElement(skip_list *sl, int elem); 
 
 

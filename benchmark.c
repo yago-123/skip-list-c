@@ -6,10 +6,10 @@
 
 #define BENCHMARKNUMBERS 1000000
 
-float benchmarkInserir(skip_list *sl, int randomNumbers[]); 
-float benchmarkEsborrar(skip_list *sl, int randomNumbers[]); 
-float benchmarkBuscar(skip_list *sl, int randomNumbers[]); 
-int benchmarkCost_Buscar(skip_list *sl, int randomNumbers[]); 
+float benchmarkInsert(skip_list *sl, int randomNumbers[]); 
+float benchmarkDelete(skip_list *sl, int randomNumbers[]); 
+float benchmarkSearch(skip_list *sl, int randomNumbers[]); 
+int benchmarkCost_Search(skip_list *sl, int randomNumbers[]); 
 float timedifference_msec(struct timeval t0, struct timeval t1); 
 
 struct timeval start, end;
@@ -26,71 +26,71 @@ int main() {
 	}
 
 	skip_list sl; 
-	if (Crear(&sl) == SUCCESS) { 
-		total_time = benchmarkInserir(&sl, randomNumbers); 
+	if (Create(&sl) == SUCCESS) { 
+		total_time = benchmarkInsert(&sl, randomNumbers); 
 		printf("Inserted %d values in %0.2f milliseconds = %0.2f seconds\n", BENCHMARKNUMBERS, total_time, total_time/1000.0); 
 		
-		total_time = benchmarkBuscar(&sl, randomNumbers); 
+		total_time = benchmarkSearch(&sl, randomNumbers); 
 		printf("Searched %d random numbers in %0.2f milliseconds = %0.2f seconds\n", BENCHMARKNUMBERS, total_time, total_time/1000.0); 
 
-		comparations = benchmarkCost_Buscar(&sl, randomNumbers); 
+		comparations = benchmarkCost_Search(&sl, randomNumbers); 
 		printf("Search random number over %d values, cost %0.2f comparations/search\n", BENCHMARKNUMBERS, (float)comparations/(float)BENCHMARKNUMBERS);
 
-		total_time = benchmarkEsborrar(&sl, randomNumbers);
+		total_time = benchmarkDelete(&sl, randomNumbers);
 		printf("Deleted %d numbers, in %0.2f miliseconds = %0.2f seconds\n", BENCHMARKNUMBERS, total_time, total_time/1000.0); 	
 
 
 		// free memory 
-		Destruir(&sl); 
+		Destroy(&sl); 
 	} else {
 		printf("Could not load skip list\n"); 
 	}	
 }
 
-float benchmarkInserir(skip_list *sl, int randomNumbers[]) {
+float benchmarkInsert(skip_list *sl, int randomNumbers[]) {
 	int i;	
 	gettimeofday(&start, 0); 	
 		
 	for(i = 0; i < BENCHMARKNUMBERS; i++) {
-		Inserir(&(*sl), randomNumbers[i]);  	
+		Insert(&(*sl), randomNumbers[i]);  	
 	}
 
 	gettimeofday(&end, 0); 
 	return timedifference_msec(start, end);   
 }
 
-float benchmarkBuscar(skip_list *sl, int randomNumbers[]) {
+float benchmarkSearch(skip_list *sl, int randomNumbers[]) {
 	int i;
-       	bool find; 
+       	bool endnd; 
 	gettimeofday(&start, 0);  
 
 	for(i = 0; i < BENCHMARKNUMBERS; i++) {
-		// find will check if number has been found  
-		Buscar(*sl, randomNumbers[i], &find); 
+		// endnd will check if number has been found  
+		Search(*sl, randomNumbers[i], &endnd); 
 	}
 
 	gettimeofday(&end, 0);  
 	return timedifference_msec(start, end); 
 }
 
-int benchmarkCost_Buscar(skip_list *sl, int randomNumbers[]) {
+int benchmarkCost_Search(skip_list *sl, int randomNumbers[]) {
 	int total = 0, tmp, i; 
 	
 	for(i = 0; i < BENCHMARKNUMBERS; i++) {
 		// tmp will return number of comparations 
-		Cost_Buscar(*sl, randomNumbers[i], &tmp); 
+		Cost_Search(*sl, randomNumbers[i], &tmp); 
 		total += tmp;  
 	}
 
 	return total; 
 }
 
-float benchmarkEsborrar(skip_list *sl, int randomNumbers[]) {
+float benchmarkDelete(skip_list *sl, int randomNumbers[]) {
 	int i; 
 	gettimeofday(&start, 0); 
 
 	for(i = 0; i < BENCHMARKNUMBERS; i++) {
-		Esborrar(&(*sl), randomNumbers[i]); 
+		Delete(&(*sl), randomNumbers[i]); 
 	}
 
 	gettimeofday(&end, 0); 

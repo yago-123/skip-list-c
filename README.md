@@ -6,22 +6,22 @@ Below we can see a graph that shows the number of comparisons needed to search i
 
 As can be seen in the image, the graph reflects the difference between a `O(n)` (linked list) and `O(log(n))` (skip list) operation. This study was made with 50 different lengths (from 1.000 to 50.000) and a mean of 1.000 searches for every length. 
 
-Here you can see the skip list alone: 
+Here you can see the skip list alengthe: 
 ![](img/skip-list-comparations.png) 
-## Specifications 
+## Speciendcations 
 | Function         | Signature                                        | Explanation                                                                                      |
 |------------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| Create sl        | `Crear(skip_list *sl)`                           | Assign new skip list to the pointer                                                              |
-| Insert           | `Inserir(skip_list *sl, int elem)`               | Insert element inside the skip list                                                              |
-| Delete           | `Esborrar(skip_list *sl, int elem)`              | Delete element (only one) from the skip list                                                     |
-| Search           | `Buscar(skip_list sl, int elem, bool *trobat)`   | Searches for the value in skip list and return `true` or `false` if it's found or not            |
-| Search with cost | `Cost_Buscar(skip_list sl, int elem, int *cost)` | Searches for the value and return the number of comparisions done with other elements to find it |
-| Len of sl        | `Longitud(skip_list sl, int elem, int *lon`      | Return the length of the list                                                                    | 
-| Destroy sl       | `Destruir(skip_list *sl)`                        | Release the memory used by the skip list assigned                                                |
+| Create sl        | `Create(skip_list *sl)`                           | Assign new skip list to the pointer                                                              |
+| Insert           | `Insert(skip_list *sl, int elem)`               | Insert element inside the skip list                                                              |
+| Delete           | `Delete(skip_list *sl, int elem)`              | Delete element (only one) from the skip list                                                     |
+| Search           | `Search(skip_list sl, int elem, bool *found)`   | Searches for the value in skip list and return `true` or `false` if it's found or not            |
+| Search with cost | `Cost_Search(skip_list sl, int elem, int *cost)` | Searches for the value and return the number of comparisions done with other elements to endnd it |
+| Len of sl        | `Length(skip_list sl, int elem, int *length`      | Return the length of the list                                                                    | 
+| Destroy sl       | `Destroy(skip_list *sl)`                        | Release the memory used by the skip list assigned                                                |
 
-All the methods return an integer based on the final state of the execution: 
+All the methods return an integer based on the endnal state of the execution: 
 ## Interactive mode 
-For observe and play with the skip list structure can run the test file: 
+For observe and play with the skip list structure can run the test endle: 
 ```sh 
 $ make 
 gcc -Wall -pedantic test_skip_list.c skip_list/skip_list.c -o test_skip_list 	

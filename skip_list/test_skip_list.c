@@ -2,43 +2,43 @@
 
 #define INITIALNUMBERS 20
 
-void mostraSkipList(skip_list sl); 
-int contaLongitud(int num);  
-int mostraMenu(); 
+void showSkipList(skip_list sl); 
+int countLength(int num);  
+int showMenu(); 
 
 int main() {
 	skip_list sl; 
-	bool trobat; 
-	int i, opcio, elem, cost; 
+	bool found; 
+	int i, option, elem, cost; 
 
-	Crear(&sl); 
+	Create(&sl); 
 	for(i = 0; i < INITIALNUMBERS; i++) {
-		Inserir(&sl, (rand()%100)); 
+		Insert(&sl, (rand()%100)); 
 	}
 
-	mostraSkipList(sl); 
+	showSkipList(sl); 
 
-	opcio = mostraMenu(); 
-	while(opcio != 0) {
-		switch(opcio) {
+	option = showMenu(); 
+	while(option != 0) {
+		switch(option) {
 			case 1: 
 				printf("Insert element: "); 
 				scanf("%d", &elem); 
 
-				Inserir(&sl, elem); 
+				Insert(&sl, elem); 
 				break;  
 			case 2:
 				printf("Delete element: "); 
 				scanf("%d", &elem);
 
-				Esborrar(&sl, elem);  
+				Delete(&sl, elem);  
 				break; 
 			case 3:
 				printf("Search element: "); 
 				scanf("%d", &elem); 
 
-				Buscar(sl, elem, &trobat); 
-				if(trobat) {
+				Search(sl, elem, &found); 
+				if(found) {
 					printf("Value PRESENT in the list!\n\n"); 
 				} else {
 					printf("Value NOT PRESENT in the list!\n\n"); 
@@ -48,7 +48,7 @@ int main() {
 				printf("Number of comparations searching element: ");
 				scanf("%d", &elem); 
 
-				if(Cost_Buscar(sl, elem, &cost) != ELEMENT_NO_TROBAT) {
+				if(Cost_Search(sl, elem, &cost) != ELEMENT_NOT_FOUND) {
 					printf("Value found, COST = %d comparations\n\n", cost); 
 				} else {
 					printf("Value not found, COST = %d comparations\n\n", cost); 
@@ -58,20 +58,20 @@ int main() {
 				printf("Unexpected error\n"); 
 		}
 
-		if(opcio < 3) {
-			mostraSkipList(sl);
+		if(option < 3) {
+			showSkipList(sl);
 		} 
-		opcio = mostraMenu(); 
+		option = showMenu(); 
 	}
 
-	Destruir(&sl); 
+	Destroy(&sl); 
 	return 0;
 }
 
-void mostraSkipList(skip_list sl) {
-	bool fi; 
+void showSkipList(skip_list sl) {
+	bool end; 
 	skip_node *node, *tmp; 
-	int i, j, k, maxLevels, lon;
+	int i, j, k, maxLevels, length;
 	int **arr; 
 
 	printf("Interactive Skip List: \n"); 
@@ -85,7 +85,7 @@ void mostraSkipList(skip_list sl) {
 	for(i = 0; i < maxLevels; i++) {
 		arr[i] = (int*)malloc((sl.nElems+2)*sizeof(int));	
 		for(j = 0; j < (sl.nElems+2); j++) {
-			arr[i][j] = INDETERMINAT; 
+			arr[i][j] = INDETERMINATE; 
 		}
 
 		if(node->level != 0) { 
@@ -95,15 +95,15 @@ void mostraSkipList(skip_list sl) {
 
 	// Guarda a matriu els elements 
 	for(j = 0; j < (sl.nElems+2); j++) {
-		fi = false; 
+		end = false; 
 		i = 0; 
 		tmp = node; 
-		while(i < maxLevels && !fi) {
+		while(i < maxLevels && !end) {
 			if(node != NULL) {
 				arr[i][j] = node->key; 
 				node = node->up; 
 			} else {
-				fi = true; 
+				end = true; 
 			}
 
 			i++; 
@@ -114,12 +114,12 @@ void mostraSkipList(skip_list sl) {
 	// Mostra matriu; 
 	for(i = maxLevels-1; i > -1; i--) {
 		for(j = 0; j < (sl.nElems+2); j++) {
-			if(arr[i][j] == INFINIT_NEGATIU) {
+			if(arr[i][j] == INFINIT_NEGATIVE) {
 				printf("-inf "); 
-			} else if(arr[i][j] == INFINIT_POSITIU) {
+			} else if(arr[i][j] == INFINIT_POSITIVE) {
 				printf("inf "); 
-			} else if(arr[i][j] == INDETERMINAT) {
-				for(k = 0; k < contaLongitud(arr[0][j]); k++) {
+			} else if(arr[i][j] == INDETERMINATE) {
+				for(k = 0; k < countLength(arr[0][j]); k++) {
 					printf("-"); 
 				}  
 
@@ -137,13 +137,13 @@ void mostraSkipList(skip_list sl) {
 		free(arr[i]); 
 	}
 
-	Longitud(sl, &lon); 
-	printf("List len: %d\n", lon); 
+	Length(sl, &length); 
+	printf("List len: %d\n", length); 
 	printf("---------------------------\n"); 
 }
 
-// Determina longitud nombres 
-int contaLongitud(int num) {
+// Determina lengthgitud nombres 
+int countLength(int num) {
 	int count = 0; 
 
 	do {
@@ -154,8 +154,8 @@ int contaLongitud(int num) {
 	return count; 
 }
 
-int mostraMenu() {
-	int opcio; 
+int showMenu() {
+	int option; 
 
 	printf("\t1. Insert\n");  
 	printf("\t2. Delete\n");  
@@ -166,8 +166,8 @@ int mostraMenu() {
 
 	do {
 		printf("\tInsert option: "); 
-		scanf("%d", &opcio); 
-	} while(opcio < 0 || opcio > 5); 
+		scanf("%d", &option); 
+	} while(option < 0 || option > 5); 
 
-	return opcio; 
+	return option; 
 }

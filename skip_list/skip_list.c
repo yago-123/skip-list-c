@@ -1,6 +1,6 @@
 #include"skip_list.h"
 
-int Crear(skip_list *sl) {
+int Create(skip_list *sl) {
 	srand(time(0)); 
 	sl->nElems = 0; 
 
@@ -10,40 +10,40 @@ int Crear(skip_list *sl) {
 	sl->tail = (skip_node*)malloc(sizeof(skip_node)); 
 	sl->tail->level = -1; 
 
-	// Crea primer nivell valid: 0 
-	if(creaNovaCapaSuperior(&(*sl)) == SUCCESS) {
+	// Create endrst valid level: 0 
+	if(createNewUpperLayer(&(*sl)) == SUCCESS) {
 		return SUCCESS; 
 	} else {
-		return ERROR_CREAR; 
+		return ERROR_CREATION; 
 	}
 }
 
-int Destruir(skip_list *sl) {
-	bool fi; 
+int Destroy(skip_list *sl) {
+	bool end; 
 	int i, j, maxLevel;
 	skip_node *tmp, *tmp2, *tmp3; 
 
-	if(Existeix(*sl)) {
+	if(Exist(*sl)) {
 		maxLevel = sl->head->level+1; 
-		// Agafa head inferior
+		// Take low level head 
 		tmp = sl->head; 
 		while(tmp->level != 0) {
 			tmp = tmp->down; 
 		}
 
-		// Recorre node 1 a 1 de baix a dalt 
+		// Walks node 1 to 1, from down to up
 		for(j = 0; j < (sl->nElems+2); j++) {
 			tmp2 = tmp->next; 
-			fi = false; 
+			end = false; 
 			i = 0; 
-			while(!fi && i < maxLevel) {
+			while(!end && i < maxLevel) {
 				if(tmp != NULL) {
 					tmp3 = tmp; 
 					tmp = tmp->up;
 					// Allibera node 
 					free(tmp3);  
 				} else {
-					fi = true; 
+					end = true; 
 				} 
 				i++; 
 			} 
@@ -55,17 +55,17 @@ int Destruir(skip_list *sl) {
 
 		return SUCCESS;
 	} else {
-		return ERROR_DESTRUIR;  
+		return ERROR_DESTROY;  
 	}
 }
 
-int Inserir(skip_list *sl, int elem) {
+int Insert(skip_list *sl, int elem) {
 	int i; 
-	bool nouNivell; 
+	bool newLevel; 
 	skip_node *node, *tmp, *tmp2; 
 
 	node = sl->head; 
-	// Busca fins nivell 0 
+	// Search until level 0 
 	while(node->level != 0) {
 		if(node->key <= elem && node->next->key <= elem) {
 			node = node->next;
@@ -74,12 +74,12 @@ int Inserir(skip_list *sl, int elem) {
 		}
 	} 
 
-	// Busca posicio dins nivell 0 
+	// Search positions inside level 0
 	while(elem > node->key) {
 		node = node->next; 
 	}
 
-	// Insereix element
+	// Insert element
 	tmp = (skip_node*)malloc(sizeof(skip_node)); 
 	tmp->key = elem; 
 	tmp->level = 0;
@@ -91,38 +91,38 @@ int Inserir(skip_list *sl, int elem) {
 	node->prev->next = tmp;
 	node->prev = tmp;
 
-	// Posiciona node darrere tmp 
+	// Positions node behind tmp 
 	node = tmp->prev;  
 
-	// Insereix columna (coin flip) 
+	// Insert column (coin flip) 
 	i = 1;  
 	while((rand()%2) == 0) {
-		nouNivell = false; 
-		// Busca primer previ amb nivell superior
-		while(node->up == NULL && !nouNivell) {
-			if((node->key == INFINIT_NEGATIU) && 
+		newLevel = false; 
+		// Search endrst level with superior level
+		while(node->up == NULL && !newLevel) {
+			if((node->key == INFINIT_NEGATIVE) && 
 					(node->level == sl->head->level)) {
-				nouNivell = true; 
+				newLevel = true; 
 			} else {
 				node = node->prev; 
 			}
 		}
 
-		// Crea nova capa 
-		if(nouNivell) {
-			creaNovaCapaSuperior(&(*sl)); 
+		// Create new layer
+		if(newLevel) {
+			createNewUpperLayer(&(*sl)); 
 			node = sl->head; 
 		} else {
-			// Mou node superior
+			// Move node higher
 			node = node->up;
 		} 
 
-		// Posiciona tmp a la capa superior
+		// Position tmp in upper layer 
 		tmp->up = (skip_node*)malloc(sizeof(skip_node)); 
 		tmp->up->key = elem; 
 		tmp->up->level = i;
 
-		// Reestableix direccions
+		// Reestablish direction
 		tmp2 = tmp;  
 		tmp = tmp->up;
 		tmp->down = tmp2;  
@@ -136,57 +136,57 @@ int Inserir(skip_list *sl, int elem) {
 		i++;   
 	}
 
-	// Augmenta elements i posa fi a l'element
+	// Increment elements and put end 
 	tmp->up = NULL;  
 	sl->nElems++; 
 
 	return 0;
 }
 
-int Esborrar(skip_list *sl, int elem) {
+int Delete(skip_list *sl, int elem) {
 	bool present; 
 
-	if(Existeix(*sl)) {
-		// Elimina tots els nodes amb aquest elem
-		Buscar((*sl), elem, &present);
+	if(Exist(*sl)) {
+		// Delete all the nodes with that element
+		Search((*sl), elem, &present);
 		while(present) { 
-			// Elimina element amb valor elem
-			eliminaUnElement(&(*sl), elem);
-			Buscar((*sl), elem, &present); 
+			// Delete node with elem value
+			deleteOneElement(&(*sl), elem);
+			Search((*sl), elem, &present); 
 		} 
 
 		return SUCCESS; 
 	} else {
-		return LLISTA_NO_CREADA; 
+		return NOT_DELETED_LIST; 
 	}
 }
 
-int Longitud(skip_list sl, int *lon) {
-	if(Existeix(sl)) {
-		*lon = sl.nElems; 
+int Length(skip_list sl, int *length) {
+	if(Exist(sl)) {
+		*length = sl.nElems; 
 		return SUCCESS; 
 	} else {
-		return LLISTA_NO_CREADA; 
+		return NOT_DELETED_LIST; 
 	} 
 }
 
-int Buscar(skip_list sl, int elem, bool *trobat) {
+int Search(skip_list sl, int elem, bool *found) {
 	skip_node *tmp; 
 
 	tmp = sl.head; 
-	*trobat = false; 
+	*found = false; 
 
-	if(Existeix(sl)) {
-		while(!(*trobat) && elem >= tmp->key) {
-			// Si es igual 
+	if(Exist(sl)) {
+		while(!(*found) && elem >= tmp->key) {
+			// If is equal 
 			if(elem == tmp->key) {
-				*trobat = true; 
+				*found = true; 
 			} else {
-				// Si elem es mes petit i diferent de nivell 0
+				// If element is smaller and not equals level 0
 				if(tmp->next->key > elem && tmp->level != 0) {
 					tmp = tmp->down; 	
 				} else {
-					// Si elem es mes gran 
+					// If elem is bigger 
 					tmp = tmp->next; 
 				} 
 			}
@@ -194,29 +194,29 @@ int Buscar(skip_list sl, int elem, bool *trobat) {
 
 		return SUCCESS; 
 	} else {
-		return LLISTA_NO_CREADA; 
+		return NOT_DELETED_LIST; 
 	}
 }
 
-int Cost_Buscar(skip_list sl, int elem, int *cost) {
+int Cost_Search(skip_list sl, int elem, int *cost) {
 	skip_node *tmp; 
-	bool trobat; 
+	bool found; 
 
 	tmp = sl.head; 
-	trobat = false; 
+	found = false; 
 
 	*cost = 0; 
-	if(Existeix(sl)) {
-		// Si es igual 
-		while(!trobat && elem >= tmp->key) {
+	if(Exist(sl)) {
+		// If is equal
+		while(!found && elem >= tmp->key) {
 			if(elem == tmp->key) {
-				trobat = true; 
+				found = true; 
 			} else {
-				// Si elem es mes petit i diferent de nivell 0 
+				// If elem is smaller and different from level 0 
 				if(tmp->next->key > elem && tmp->level != 0) {
 					tmp = tmp->down;
 				} else {
-					// Si elem es mes gran 
+					// If element is bigger 
 					tmp = tmp->next; 
 				} 
 
@@ -224,18 +224,18 @@ int Cost_Buscar(skip_list sl, int elem, int *cost) {
 			}
 		}
 
-		if(trobat) {
+		if(found) {
 			return SUCCESS;
 		} else {
-			return ELEMENT_NO_TROBAT; 
+			return ELEMENT_NOT_FOUND; 
 		} 
 	} else {
-		return LLISTA_NO_CREADA; 
+		return NOT_DELETED_LIST; 
 	}
 }
 
-// AUXILIARS
-bool Existeix(skip_list sl) {
+// AUXILIARIES
+bool Exist(skip_list sl) {
 	if(sl.nElems != -1) {
 		return true; 
 	} else {
@@ -243,27 +243,27 @@ bool Existeix(skip_list sl) {
 	}
 } 
 
-// Crea valors head i tail i posiciona direccions 
-int creaNovaCapaSuperior(skip_list *sl) {
+// Create value head, tail and position directions
+int createNewUpperLayer(skip_list *sl) {
 	skip_node *tmp, *tmp2; 
 
 	tmp = sl->head; 
 	tmp2 = sl->tail; 
 
-	// Crea nou head i tail 
+	// Create new head and tail 
 	sl->head->up = (skip_node*)malloc(sizeof(skip_node)); 
 	sl->tail->up = (skip_node*)malloc(sizeof(skip_node)); 
 
 	if((sl->head->up != NULL) && (sl->tail->up != NULL)) {	
-		// Posiciona head i tail a les posicions correctes 
+		// Position head and tail in correct directions  
 		sl->head->up->level = sl->head->level + 1; 
 		sl->tail->up->level = sl->tail->level + 1; 
 
 		sl->head = sl->head->up;  
 		sl->tail = sl->tail->up; 
 
-		sl->head->key = INFINIT_NEGATIU; 
-		sl->tail->key = INFINIT_POSITIU;
+		sl->head->key = INFINIT_NEGATIVE; 
+		sl->tail->key = INFINIT_POSITIVE;
 
 		sl->head->next = sl->tail; 
 		sl->tail->prev = sl->head; 
@@ -276,13 +276,12 @@ int creaNovaCapaSuperior(skip_list *sl) {
 
 		return SUCCESS; 
 	} else {
-		return ERROR_CREAR_CAPA_SUPERIOR; 
+		return ERROR_CREATION_CAPA_SUPERIOR; 
 	}
 }
 
-// Elimina head i tail no necesaris
-int eliminaCapaSuperior(skip_list *sl) {  
-	// Elimina head i tail sobrant 
+// Delete head and tail not required 
+int deleteUpperLayer(skip_list *sl) {  
 	sl->head = sl->head->down;  
 	sl->tail = sl->tail->down; 
 
@@ -294,39 +293,39 @@ int eliminaCapaSuperior(skip_list *sl) {
 
 	return SUCCESS; 
 }
-
-// Elimina un element de la llista 
-int eliminaUnElement(skip_list *sl, int elem) {
+ 
+// Delete one element from list 
+int deleteOneElement(skip_list *sl, int elem) {
 	skip_node *tmp, *tmp2; 
-	bool trobat, fi; 
+	bool found, end; 
 
 	tmp = sl->head; 
-	trobat = false; 
+	found = false; 
 
-	// Si es igual 
-	while(!trobat && elem >= tmp->key) {
+	// If is equal 
+	while(!found && elem >= tmp->key) {
 		if(elem == tmp->key) {
-			trobat = true; 
+			found = true; 
 		} else {
-			// Si elem es mes petit i diferent de nivell 0 
+			// Si elem is smaller and different from level 0 
 			if(tmp->next->key > elem && tmp->level != 0) {
 				tmp = tmp->down;
-			} else {
-				// Si elem es mes gran 
+			} else { 
+				// If elem is bigger 
 				tmp = tmp->next; 
 			} 
 		}
 	}
 
-	if(trobat) {
-		// Procedeix a eliminar columna sencera 
-		fi = false; 
+	if(found) {
+		// Deletes whole column 
+		end = false; 
 		do {
-			if((tmp->prev->key == INFINIT_NEGATIU) &&
-					(tmp->next->key == INFINIT_POSITIU) && 
+			if((tmp->prev->key == INFINIT_NEGATIVE) &&
+					(tmp->next->key == INFINIT_POSITIVE) && 
 					(tmp->level > 0)) {
 
-				eliminaCapaSuperior(&(*sl)); 
+				deleteUpperLayer(&(*sl)); 
 			} else {
 				tmp->prev->next = tmp->next;
 				tmp->next->prev = tmp->prev;   
@@ -334,19 +333,19 @@ int eliminaUnElement(skip_list *sl, int elem) {
 
 			tmp2 = tmp; 
 			if(tmp->level == 0) {
-				fi = true; 
+				end = true; 
 			} else {
 				tmp = tmp->down; 
 			}
 
-			// Allibera node 
+			// Free node 
 			free(tmp2);   
-		} while(!fi && tmp != NULL); 
+		} while(!end && tmp != NULL); 
 
 		sl->nElems--;
 
 		return SUCCESS;
 	} else {
-		return ELEMENT_NO_TROBAT; 
+		return ELEMENT_NOT_FOUND; 
 	} 	
 }
