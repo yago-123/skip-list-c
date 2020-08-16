@@ -100,7 +100,7 @@ int Insert(skip_list *sl, int elem) {
 		newLevel = false; 
 		// Search endrst level with superior level
 		while(node->up == NULL && !newLevel) {
-			if((node->key == INFINIT_NEGATIVE) && 
+			if((node->key == INFINITE_NEGATIVE) && 
 					(node->level == sl->head->level)) {
 				newLevel = true; 
 			} else {
@@ -262,8 +262,8 @@ int createNewUpperLayer(skip_list *sl) {
 		sl->head = sl->head->up;  
 		sl->tail = sl->tail->up; 
 
-		sl->head->key = INFINIT_NEGATIVE; 
-		sl->tail->key = INFINIT_POSITIVE;
+		sl->head->key = INFINITE_NEGATIVE; 
+		sl->tail->key = INFINITE_POSITIVE;
 
 		sl->head->next = sl->tail; 
 		sl->tail->prev = sl->head; 
@@ -321,8 +321,8 @@ int deleteOneElement(skip_list *sl, int elem) {
 		// Deletes whole column 
 		end = false; 
 		do {
-			if((tmp->prev->key == INFINIT_NEGATIVE) &&
-					(tmp->next->key == INFINIT_POSITIVE) && 
+			if((tmp->prev->key == INFINITE_NEGATIVE) &&
+					(tmp->next->key == INFINITE_POSITIVE) && 
 					(tmp->level > 0)) {
 
 				deleteUpperLayer(&(*sl)); 

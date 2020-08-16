@@ -76,12 +76,12 @@ void showSkipList(skip_list sl) {
 
 	printf("Interactive Skip List: \n"); 
 
-	// Inicialitza array
+	// Initialize array
 	maxLevels = sl.head->level+1; 
 	arr = (int **)malloc(maxLevels*sizeof(int *)); 
 
 	node = sl.head; 
-	// Inicialitza punters dels arrays  
+	// Initialize pointers from arrays  
 	for(i = 0; i < maxLevels; i++) {
 		arr[i] = (int*)malloc((sl.nElems+2)*sizeof(int));	
 		for(j = 0; j < (sl.nElems+2); j++) {
@@ -93,7 +93,7 @@ void showSkipList(skip_list sl) {
 		} 
 	}
 
-	// Guarda a matriu els elements 
+	// Save element matrix 
 	for(j = 0; j < (sl.nElems+2); j++) {
 		end = false; 
 		i = 0; 
@@ -111,12 +111,12 @@ void showSkipList(skip_list sl) {
 		node = tmp->next; 		
 	} 
 
-	// Mostra matriu; 
+	// Show matrix 
 	for(i = maxLevels-1; i > -1; i--) {
 		for(j = 0; j < (sl.nElems+2); j++) {
-			if(arr[i][j] == INFINIT_NEGATIVE) {
+			if(arr[i][j] == INFINITE_NEGATIVE) {
 				printf("-inf "); 
-			} else if(arr[i][j] == INFINIT_POSITIVE) {
+			} else if(arr[i][j] == INFINITE_POSITIVE) {
 				printf("inf "); 
 			} else if(arr[i][j] == INDETERMINATE) {
 				for(k = 0; k < countLength(arr[0][j]); k++) {
@@ -132,7 +132,7 @@ void showSkipList(skip_list sl) {
 		printf("\n"); 
 	}
 
-	// Allibera matriu 
+	// Free matrix  
 	for(i = 0; i < maxLevels; i++) {
 		free(arr[i]); 
 	}
@@ -141,8 +141,7 @@ void showSkipList(skip_list sl) {
 	printf("List len: %d\n", length); 
 	printf("---------------------------\n"); 
 }
-
-// Determina lengthgitud nombres 
+ 
 int countLength(int num) {
 	int count = 0; 
 

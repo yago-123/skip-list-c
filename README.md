@@ -8,7 +8,7 @@ As can be seen in the image, the graph reflects the difference between a `O(n)` 
 
 Here you can see the skip list alengthe: 
 ![](img/skip-list-comparations.png) 
-## Speciendcations 
+## Specifications 
 | Function         | Signature                                        | Explanation                                                                                      |
 |------------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------|
 | Create sl        | `Create(skip_list *sl)`                           | Assign new skip list to the pointer                                                              |
@@ -19,9 +19,9 @@ Here you can see the skip list alengthe:
 | Len of sl        | `Length(skip_list sl, int elem, int *length`      | Return the length of the list                                                                    | 
 | Destroy sl       | `Destroy(skip_list *sl)`                        | Release the memory used by the skip list assigned                                                |
 
-All the methods return an integer based on the endnal state of the execution: 
+All the methods return an integer based on the final state of the function. 
 ## Interactive mode 
-For observe and play with the skip list structure can run the test endle: 
+For observe and play with the skip list structure can run the test file: 
 ```sh 
 $ make 
 gcc -Wall -pedantic test_skip_list.c skip_list/skip_list.c -o test_skip_list 	
